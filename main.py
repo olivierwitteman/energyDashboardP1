@@ -16,5 +16,8 @@ serial_reader = SerialReader(
 # print(telegram)
 
 for telegram in serial_reader.read_as_object():
-    os.system('clear')
-    print(telegram)
+    # os.system('clear')
+
+    data = f'\r{telegram.CURRENT_ELECTRICITY_USAGE.value}'
+
+    print(telegram, end='')
