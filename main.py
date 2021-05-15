@@ -5,6 +5,7 @@ from dsmr_parser.clients import SerialReader, SERIAL_SETTINGS_V5
 from dsmr_parser.objects import CosemObject, MBusObject, Telegram
 from dsmr_parser.parsers import TelegramParser
 import os
+import sys
 
 serial_reader = SerialReader(
     device='/dev/ttyUSB0',
@@ -16,6 +17,10 @@ serial_reader = SerialReader(
 # print(telegram)
 
 powerhist = []
+
+
+print(sys.argv[1])
+
 
 for telegram in serial_reader.read_as_object():
     # os.system('clear')
