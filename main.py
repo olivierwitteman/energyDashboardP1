@@ -17,8 +17,7 @@ class energyMGMT:
             telegram_specification=telegram_specifications.V4
         )
 
-        # telegram = next(serial_reader.read_as_object())
-        # print(telegram)
+
         self.verbose, self.logging = False, False
         self.powerhist = []
         self.lastlog = 0
@@ -50,10 +49,12 @@ class energyMGMT:
                 print(data, end='')
 
             if self.logging:
-                log_msg = ''
-                for attr, value in telegram:
-                    if 'LOG' not in attr:
-                        log_msg += f',{telegram.P1_MESSAGE_TIMESTAMP.value},{attr},{value.value}, {value.unit},\n'
+                if time.time() - self.lastlog > 60:
+                    log_msg = ''
+                    for attr, value in telegram:
+                        if 'LOG' not in attr:
+                            log_msg += f',{telegram.P1_MESSAGE_TIMESTAMP.value},{attr},{value.value}, {value.unit},\n'
+                    self.log(log_msg)
 
 
 
