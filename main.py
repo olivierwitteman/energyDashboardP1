@@ -22,6 +22,6 @@ for telegram in serial_reader.read_as_object():
 
     powerhist.append(1000 * telegram.CURRENT_ELECTRICITY_USAGE.value)
     powerhist = powerhist[-min(10, len(powerhist)):]
-    data = f'\rCurrent power usage: {round(sum(powerhist)/len(powerhist))} W'
+    data = f'\rCurrent power usage: {round(sum(powerhist)/len(powerhist))} W  - {powerhist}'
 
     print(data, end='')
