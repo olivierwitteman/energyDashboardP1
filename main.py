@@ -11,7 +11,7 @@ import time
 
 class energyMGMT:
     def __init__(self):
-        self.erial_reader = SerialReader(
+        self.serial_reader = SerialReader(
             device='/dev/ttyUSB0',
             serial_settings=SERIAL_SETTINGS_V5,
             telegram_specification=telegram_specifications.V4
@@ -23,35 +23,37 @@ class energyMGMT:
         self.powerhist = []
         self.lastlog = 0
 
+        try:
+            arg = sys.argv[1]
+            if arg == '-v':
+                self.verbose = True
+            elif arg == '-l':
+                self.logging = True
+        except IndexError:
+            pass
+
     def log(self, msg):
         with open(f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.csv', 'a') as logfile:
             logfile.write(f'{time.time()},{log_msg}')
         self.lastlog = time.time()
 
-try:
-    arg = sys.argv[1]
-    if arg == '-v':
-        verbose = True
-    elif arg == '-l':
-        logging = True
-except IndexError:
-    arg = None
+    def subscribe(self):
+        for telegram in self.serial_reader.read_as_object():
 
-for telegram in serial_reader.read_as_object():
+            if self.verbose:
+                os.system('clear')
+                print(telegram)
+            else:
+                self.powerhist.append(1000 * telegram.CURRENT_ELECTRICITY_USAGE.value)
+                self.powerhist = self.powerhist[-min(5, len(self.powerhist)):]
+                data = f'\rCurrent power usage: {round(sum(self.powerhist) / len(self.powerhist))} W'
+                print(data, end='')
 
-    if verbose:
-        os.system('clear')
-        print(telegram)
-    else:
-        powerhist.append(1000 * telegram.CURRENT_ELECTRICITY_USAGE.value)
-        powerhist = powerhist[-min(5, len(powerhist)):]
-        data = f'\rCurrent power usage: {round(sum(powerhist)/len(powerhist))} W'
-        print(data, end='')
+            if self.logging:
+                log_msg = ''
+                for attr, value in telegram:
+                    if 'LOG' not in attr:
+                        log_msg += f',{telegram.P1_MESSAGE_TIMESTAMP.value},{attr},{value.value}, {value.unit},\n'
 
-    if logging:
-        log_msg = ''
-        for attr, value in telegram:
-            if 'LOG' not in attr:
-                log_msg += f',{telegram.P1_MESSAGE_TIMESTAMP.value},{attr},{value.value}, {value.unit},\n'
 
-        # time.sleep(5)
+
