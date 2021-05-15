@@ -8,16 +8,25 @@ import os
 import sys
 import time
 
-serial_reader = SerialReader(
-    device='/dev/ttyUSB0',
-    serial_settings=SERIAL_SETTINGS_V5,
-    telegram_specification=telegram_specifications.V4
-)
 
-# telegram = next(serial_reader.read_as_object())
-# print(telegram)
-verbose, logging = False, False
-powerhist = []
+class energyMGMT:
+    def __init__(self):
+        self.erial_reader = SerialReader(
+            device='/dev/ttyUSB0',
+            serial_settings=SERIAL_SETTINGS_V5,
+            telegram_specification=telegram_specifications.V4
+        )
+
+        # telegram = next(serial_reader.read_as_object())
+        # print(telegram)
+        self.verbose, self.logging = False, False
+        self.powerhist = []
+        self.lastlog = 0
+
+    def log(self, msg):
+        with open(f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.csv', 'a') as logfile:
+            logfile.write(f'{time.time()},{log_msg}')
+        self.lastlog = time.time()
 
 try:
     arg = sys.argv[1]
@@ -44,7 +53,5 @@ for telegram in serial_reader.read_as_object():
         for attr, value in telegram:
             if 'LOG' not in attr:
                 log_msg += f',{telegram.P1_MESSAGE_TIMESTAMP.value},{attr},{value.value}, {value.unit},\n'
-        print(os.path.abspath(os.path.dirname(__file__)))
-        with open(f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.csv', 'a') as logfile:
-            logfile.write(log_msg)
-        time.sleep(5)
+
+        # time.sleep(5)
