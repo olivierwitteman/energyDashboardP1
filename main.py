@@ -20,4 +20,4 @@ for telegram in serial_reader.read_as_object():
 
     data = f'\r{telegram.CURRENT_ELECTRICITY_USAGE.value}'
 
-    print(telegram, end='')
+    print(data, end='')
