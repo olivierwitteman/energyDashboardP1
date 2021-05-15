@@ -44,5 +44,6 @@ for telegram in serial_reader.read_as_object():
         for attr, value in telegram:
             log_msg += f',{telegram.P1_MESSAGE_TIMESTAMP.value},{attr},{value},\n'
         print(os.path.abspath(os.path.dirname(__file__)))
-        # with open('')
-        time.sleep(5)
+        with open(f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.csv', 'a') as logfile:
+            logfile.write(log_msg)
+        # time.sleep(5)
