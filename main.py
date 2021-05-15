@@ -33,7 +33,7 @@ class energyMGMT:
 
     def log(self, msg):
         with open(f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.csv', 'a') as logfile:
-            logfile.write(f'{time.time()},{log_msg}')
+            logfile.write(f'{time.time()},{msg}')
         self.lastlog = time.time()
 
     def subscribe(self):
