@@ -53,7 +53,7 @@ class energyMGMT:
                     log_msg = ''
                     for attr, value in telegram:
                         if 'LOG' not in attr:
-                            log_msg += f',{telegram.P1_MESSAGE_TIMESTAMP.value},{attr},{value.value}, {value.unit},\n'
+                            log_msg += f'{telegram.P1_MESSAGE_TIMESTAMP.value},{attr},{value.value}, {value.unit},\n'
                     self.log(log_msg)
 
 
