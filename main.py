@@ -15,18 +15,23 @@ serial_reader = SerialReader(
 
 # telegram = next(serial_reader.read_as_object())
 # print(telegram)
-
+verbose = False
 powerhist = []
 
-
-print(sys.argv[1])
-
+try:
+    arg = sys.argv[1]
+    if arg == '-v':
+        verbose = True
+except IndexError:
+    arg = None
 
 for telegram in serial_reader.read_as_object():
-    # os.system('clear')
 
-    powerhist.append(1000 * telegram.CURRENT_ELECTRICITY_USAGE.value)
-    powerhist = powerhist[-min(5, len(powerhist)):]
-    data = f'\rCurrent power usage: {round(sum(powerhist)/len(powerhist))} W'
-
-    print(data, end='')
+    if verbose:
+        os.system('clear')
+        print(telegram)
+    else:
+        powerhist.append(1000 * telegram.CURRENT_ELECTRICITY_USAGE.value)
+        powerhist = powerhist[-min(5, len(powerhist)):]
+        data = f'\rCurrent power usage: {round(sum(powerhist)/len(powerhist))} W'
+        print(data, end='')
