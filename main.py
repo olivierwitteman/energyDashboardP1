@@ -57,4 +57,6 @@ class energyMGMT:
                     self.log(log_msg)
 
 
-
+if __name__ == '__main__':
+    eMGMT = energyMGMT()
+    eMGMT.subscribe()
