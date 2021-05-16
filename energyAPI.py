@@ -12,8 +12,7 @@ def tail(f, n):
 
 @app.get("/latest/")
 def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
-    data = {'data': [],
-            'date': []}
+    data = {'data': []}
     lines = tail(f=f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.csv', n=int(21*n))
 
     dates = list(set([d.split(b',')[1] for d in lines]))
@@ -32,8 +31,9 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
         for line in trimmedlines:
             if date in line:
                 keeplines.append({"metric": f"{line.split(b',')[2]} [{line.split(b',')[4]}]",
-                                  "value": line.split(b',')[3]})
-        data['date'].append(date)
+                                  "value": line.split(b',')[3],
+                                  "date": date})
+
         data['data'].append(keeplines)
 
     return data
