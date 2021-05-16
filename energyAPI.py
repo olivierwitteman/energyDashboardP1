@@ -16,7 +16,7 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
     data = {'data': [],
             'date': []}
     lines = tail(f=f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.csv', n=int(21*n))
-    lines.reverse()
+    # lines.reverse()
 
     dates = list(set([d.split(b',')[1] for d in lines]))[:n]
 
