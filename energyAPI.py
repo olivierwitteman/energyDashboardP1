@@ -19,7 +19,7 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
     # lines.reverse()
 
     dates = list(set([d.split(b',')[1] for d in lines]))[:n]
-
+    dates.sort()
     print(dates)
 
     trimmedlines = []
@@ -40,4 +40,4 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
 
     return data
 
-# print(return_metrics(n=2, metric='POWER_L1'))
+print(return_metrics(n=3, metric='POWER_L1'))
