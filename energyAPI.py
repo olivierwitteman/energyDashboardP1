@@ -2,8 +2,10 @@ from fastapi import FastAPI
 from typing import Optional
 import os
 import subprocess
+import uvicorn
 
 app = FastAPI()
+
 
 def tail(f, n):
     proc = subprocess.Popen(['tail', '-n', f'{n}', f], stdout=subprocess.PIPE)
@@ -45,3 +47,6 @@ def return_state():
         state = register.readline()
         return {"power": state}
 
+
+if __name__ == '__main__':
+    uvicorn.run("energyAPI:app", host="192.168.178.42", port=8000)
