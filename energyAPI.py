@@ -35,6 +35,6 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
                                   "unit": line.split(b',')[4],
                                   "date": date})
 
-        data['data'].append(keeplines)
+        data['data'].append({"sample": keeplines})
 
     return data
