@@ -19,7 +19,7 @@ def root():
 def return_metrics(metric: Optional[str] = None, n: Optional[int] = 1):
     data = {}
     lines = tail(f=f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.csv', n=int(21*n))
-
+    lines.reverse()
     print(lines)
     # last_sample = lines[0].split(",")[1]
 
