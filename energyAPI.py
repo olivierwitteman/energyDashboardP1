@@ -18,9 +18,9 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
     lines = tail(f=f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.csv', n=int(21*n))
     # lines.reverse()
 
-    dates = list(set([d.split(b',')[1] for d in lines]))[:n]
+    dates = list(set([d.split(b',')[1] for d in lines]))
     dates.sort()
-    print(dates)
+    print(dates[:n])
 
     trimmedlines = []
     if metric != '':
