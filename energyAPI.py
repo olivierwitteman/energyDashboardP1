@@ -30,6 +30,8 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
     else:
         trimmedlines = lines
 
+    print(trimmedlines)
+
     for date in dates:
         keeplines = []
         for line in trimmedlines:
