@@ -37,6 +37,7 @@ class energyMGMT:
         self.lastlog = time.time()
 
     def write_register(self, payload):
+        print(payload)
         with open(f'{os.path.abspath(os.path.dirname(__file__))}/P1.state', 'w') as register:
             register.write(payload)
 
