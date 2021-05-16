@@ -6,7 +6,6 @@ import subprocess
 app = FastAPI()
 
 def tail(f, n):
-    # print(f'tail -n {n} {f}')
     proc = subprocess.Popen(['tail', '-n', f'{n}', f], stdout=subprocess.PIPE)
     lines = proc.stdout.readlines()
     return lines
@@ -16,11 +15,9 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
     data = {'data': [],
             'date': []}
     lines = tail(f=f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.csv', n=int(21*n))
-    # lines.reverse()
 
     dates = list(set([d.split(b',')[1] for d in lines]))
     dates.sort()
-    print(dates[:n])
 
     trimmedlines = []
     if metric != '':
@@ -29,8 +26,6 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
                 trimmedlines.append(line)
     else:
         trimmedlines = lines
-
-    print(trimmedlines)
 
     for date in dates:
         keeplines = []
@@ -41,5 +36,3 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
         data['data'].append(keeplines)
 
     return data
-
-print(return_metrics(n=3, metric='POWER_L1'))
