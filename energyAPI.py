@@ -17,5 +17,6 @@ def root():
 @app.get("/latest/")
 def return_latest():
 
-    test = tail(f=f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.csv', n=30)
-    return {test}
+    test = tail(f=f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.csv', n=10)
+    print(test)
+    return {"msg": test}
