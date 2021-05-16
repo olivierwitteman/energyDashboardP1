@@ -11,10 +11,6 @@ def tail(f, n):
     lines = proc.stdout.readlines()
     return lines
 
-@app.get("/")
-def root():
-    return {"msg": "test"}
-
 @app.get("/latest/")
 def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
     data = {'data': [],
@@ -23,18 +19,22 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
     lines.reverse()
 
     dates = list(set([d.split(b',')[1] for d in lines]))[:n]
-    #
-    # print(dates)
 
+    trimmedlines = []
+    if metric is not '':
+        for line in lines:
+            if all(cond in line for cond in [str.encode(metric), b'TIMESTAMP']):
+                trimmedlines.append(line)
+    else:
+        trimmedlines = lines
 
     for date in dates:
         keeplines = []
-        for line in lines:
-            if all(cond in line for cond in date+str.encode(metric)):
+        for line in trimmedlines:
+            if date in line:
                 keeplines.append({f"{line.split(b',')[2]} [{line.split(b',')[4]}]": line.split(b',')[3]})
         data['date'].append(date)
         data['data'].append(keeplines)
-
 
     return data
 
