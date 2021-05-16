@@ -19,4 +19,4 @@ def return_latest():
 
     lines = tail(f=f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.csv', n=10)
     print(lines)
-    return {"msg": lines[0]}
+    return {"msg": lines}
