@@ -21,7 +21,7 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
     trimmedlines = []
     if metric != '':
         for line in lines:
-            if any(cond in line for cond in [str.encode(metric), b'TIMESTAMP']):
+            if any(cond in line for cond in [str.encode(metric)]):
                 trimmedlines.append(line)
     else:
         trimmedlines = lines
