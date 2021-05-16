@@ -36,6 +36,6 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
         data['data'].append(keeplines)
 
 
-    return {"msg": data}
+    return data
 
 # print(return_metrics(n=2, metric='POWER_L1'))
