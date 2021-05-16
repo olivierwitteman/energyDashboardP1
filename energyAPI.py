@@ -20,8 +20,10 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
 
     dates = list(set([d.split(b',')[1] for d in lines]))[:n]
 
+    print(dates)
+
     trimmedlines = []
-    if metric is not '':
+    if metric != '':
         for line in lines:
             if all(cond in line for cond in [str.encode(metric), b'TIMESTAMP']):
                 trimmedlines.append(line)
