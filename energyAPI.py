@@ -6,7 +6,7 @@ import subprocess
 app = FastAPI()
 
 def tail(f, n):
-    proc = subprocess.Popen(['tail', '-n', n, f], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(['tail', '-n', f'{n}, f], stdout=subprocess.PIPE)
     lines = proc.stdout.readlines()
     return lines
 
@@ -21,5 +21,5 @@ def return_latest():
     print(lines)
     return {"msg": lines[0]}
 
-
+# print(f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.csv')
 tail(f=f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.csv', n=10)
