@@ -36,9 +36,15 @@ class energyMGMT:
             logfile.write(f'{time.time()},{msg}')
         self.lastlog = time.time()
 
+    def write_register(self, payload):
+        with open(f'{os.path.abspath(os.path.dirname(__file__))}/P1.state', 'w') as register:
+            register.write(payload)
+
     def subscribe(self):
         for telegram in self.serial_reader.read_as_object():
-            if time.time() - self.lastlog >= 60:
+            self.write_register(telegram.INSTANTANEOUS_ACTIVE_POWER_L1_POSITIVE.value)
+
+            if time.time() - self.lastlog >= 300:
                 if self.verbose:
                     os.system('clear')
                     print(telegram)
@@ -57,8 +63,8 @@ class energyMGMT:
 
 if __name__ == '__main__':
     while True:
+        eMGMT = energyMGMT()
         try:
-            eMGMT = energyMGMT()
             eMGMT.subscribe()
         except Exception as e:
             eMGMT.log(e)

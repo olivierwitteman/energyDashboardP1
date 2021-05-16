@@ -38,3 +38,10 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
         data['data'].append({"sample": keeplines})
 
     return data
+
+@app.get("/state/")
+def return_state():
+    with open(f'{os.path.abspath(os.path.dirname(__file__))}/P1.state', 'r') as register:
+        state = register.readline()
+        return {"power": state}
+
