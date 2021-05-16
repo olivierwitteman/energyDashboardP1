@@ -38,26 +38,21 @@ class energyMGMT:
 
     def subscribe(self):
         for telegram in self.serial_reader.read_as_object():
+            if time.time() - self.lastlog >= 60:
+                if self.verbose:
+                    os.system('clear')
+                    print(telegram)
+                else:
+                    pass
 
-            if self.verbose:
-                os.system('clear')
-                print(telegram)
-            else:
-                pass
-                # self.powerhist.append(1000 * telegram.CURRENT_ELECTRICITY_USAGE.value)
-                # self.powerhist = self.powerhist[-min(5, len(self.powerhist)):]
-                # data = f'\rCurrent power usage: {round(sum(self.powerhist) / len(self.powerhist))} W'
-                # print(data, end='')
-
-            if self.logging:
-                if time.time() - self.lastlog >= 60:
+                if self.logging:
                     log_msg = ''
                     for attr, value in telegram:
                         if 'LOG' not in attr:
                             log_msg += f',{telegram.P1_MESSAGE_TIMESTAMP.value},{attr},{value.value},{value.unit},\n'
                     self.log(log_msg[1:])
 
-            time.sleep(58)
+            # time.sleep(58)
 
 
 if __name__ == '__main__':
