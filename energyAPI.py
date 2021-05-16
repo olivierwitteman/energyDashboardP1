@@ -6,7 +6,7 @@ import subprocess
 app = FastAPI()
 
 def tail(f, n):
-    proc = subprocess.Popen(['tail', '-n', f'{n}, f], stdout=subprocess.PIPE)
+    proc = subprocess.Popen(['tail', '-n', f'{n}', f], stdout=subprocess.PIPE)
     lines = proc.stdout.readlines()
     return lines
 
