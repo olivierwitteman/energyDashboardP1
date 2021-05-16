@@ -23,7 +23,7 @@ def return_metrics(metric: Optional[str] = None, n: Optional[int] = 1):
     # print(lines)
     # last_sample = lines[0].split(",")[1]
 
-    dates = list(set([lambda d: d.split(',')[1] for d in lines]))
+    dates = list(set([(lambda d: d.split(',')[1])(d) for d in lines]))
     #
     print(dates)
 
