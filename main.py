@@ -61,5 +61,9 @@ class energyMGMT:
 
 
 if __name__ == '__main__':
-    eMGMT = energyMGMT()
-    eMGMT.subscribe()
+    while True:
+        try:
+            eMGMT = energyMGMT()
+            eMGMT.subscribe()
+        except Exception as e:
+            eMGMT.log(e)
