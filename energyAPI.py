@@ -31,7 +31,8 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
         keeplines = []
         for line in trimmedlines:
             if date in line:
-                keeplines.append({f"{line.split(b',')[2]} [{line.split(b',')[4]}]": line.split(b',')[3]})
+                keeplines.append({"metric": f"{line.split(b',')[2]} [{line.split(b',')[4]}]",
+                                  "value": line.split(b',')[3]})
         data['date'].append(date)
         data['data'].append(keeplines)
 
