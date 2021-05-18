@@ -3,7 +3,7 @@ from typing import Optional
 import os
 import subprocess
 import uvicorn
-import pandas as pd
+# import pandas as pd
 
 app = FastAPI()
 
