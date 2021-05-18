@@ -93,6 +93,8 @@ class energyMGMT:
                 if time.time() - self.lastlog[self.minute] >= 60:
                     self.log(msg=log_msg[1:], file=self.minute)
 
+                    self.trim_logs(lines_per_entry=1, minute_entries=1)
+
                 # Updates every hour
                 if time.time() - self.lastlog[self.hour] >= 60*60:
                     self.log(msg=log_msg[1:], file=self.hour)
