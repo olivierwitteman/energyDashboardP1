@@ -3,6 +3,7 @@ from typing import Optional
 import os
 import subprocess
 import uvicorn
+import pandas as pd
 
 app = FastAPI()
 
@@ -11,6 +12,7 @@ def tail(f, n):
     proc = subprocess.Popen(['tail', '-n', f'{n}', f], stdout=subprocess.PIPE)
     lines = proc.stdout.readlines()
     return lines
+
 
 @app.get("/latest/")
 def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
@@ -41,11 +43,19 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
 
     return data
 
+
 @app.get("/state/")
 def return_state():
     with open(f'{os.path.abspath(os.path.dirname(__file__))}/P1.state', 'r') as register:
-        state = register.readline()
-        return {"power": state}
+        state = register.readline().split(',')
+        return {"L1_positive": state[0],
+                "L1_negative": state[1],
+                "currentUsage": state[2],
+                "currentDelivery": state[3],
+                "usedTarrif1": state[4],
+                "usedTarrif2": state[5],
+                "deliveredTarrif1": state[6],
+                "deliveredTarrif2": state[7]}
 
 
 if __name__ == '__main__':
