@@ -29,6 +29,8 @@ def return_minutes(metric: str, n: int):
     for line in lines:
         if any(cond in line for cond in [str.encode(metric)]):
             trimmedlines.append(line)
+
+    print(trimmedlines)
     for date in dates:
         for line in trimmedlines:
             if date in line:
