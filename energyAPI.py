@@ -14,6 +14,13 @@ def tail(f, n):
     return lines
 
 
+@app.get("/delta/")
+def return_deltas(metric: str, n: int, interval='minute'):
+    dict = return_minutes(metric=metric, n=n)
+    dict['values'] = [60 * (dict['values'][i+1] - dict['values'][i]) for i in range(len(dict['values'])-1)]
+    dict['dates'] = dict['dates'][1:]
+
+
 @app.get("/minute/")
 def return_minutes(metric: str, n: int):
     data = {'dates': [],
@@ -38,6 +45,21 @@ def return_minutes(metric: str, n: int):
                 data['values'].append(float(line.split(b',')[3]))
 
     return data
+
+
+@app.get("/state/")
+def return_state():
+    with open(f'{os.path.abspath(os.path.dirname(__file__))}/P1.state', 'r') as register:
+        state = register.readline().split(',')
+        return {"L1_positive": state[0],
+                "L1_negative": state[1],
+                "currentUsage": state[2],
+                "currentDelivery": state[3],
+                "usedTarrif1": state[4],
+                "usedTarrif2": state[5],
+                "deliveredTarrif1": state[6],
+                "deliveredTarrif2": state[7],
+                "gasMeter": state[8]}
 
 
 @app.get("/latest/")
@@ -68,21 +90,6 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
         data['data'].append({"sample": keeplines})
 
     return data
-
-
-@app.get("/state/")
-def return_state():
-    with open(f'{os.path.abspath(os.path.dirname(__file__))}/P1.state', 'r') as register:
-        state = register.readline().split(',')
-        return {"L1_positive": state[0],
-                "L1_negative": state[1],
-                "currentUsage": state[2],
-                "currentDelivery": state[3],
-                "usedTarrif1": state[4],
-                "usedTarrif2": state[5],
-                "deliveredTarrif1": state[6],
-                "deliveredTarrif2": state[7],
-                "gasMeter": state[8]}
 
 
 if __name__ == '__main__':
