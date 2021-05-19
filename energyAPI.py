@@ -37,6 +37,8 @@ def return_minutes(metric: str, n: int):
                 data['dates'].append(date)
                 data['values'].append(float(line.split(b',')[3]))
 
+    return data
+
 
 @app.get("/latest/")
 def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
