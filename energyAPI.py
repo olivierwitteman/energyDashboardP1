@@ -17,7 +17,7 @@ def tail(f, n):
 @app.get("/delta/")
 def return_deltas(metric: str, n: int, interval='minute'):
     dict = return_minutes(metric=metric, n=n)
-    dict['values'] = [60 * (dict['values'][i+1] - dict['values'][i]) for i in range(len(dict['values'])-1)]
+    dict['values'] = [60. * (float(dict['values'][i+1]) - float(dict['values'][i])) for i in range(len(dict['values'])-1)]
     dict['dates'] = dict['dates'][1:]
 
     return dict
