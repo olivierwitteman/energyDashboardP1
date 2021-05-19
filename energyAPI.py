@@ -14,6 +14,28 @@ def tail(f, n):
     return lines
 
 
+@app.get("/minute/")
+def return_minutes(metric: str, n: int):
+    data = {'dates': [],
+            'values': []}
+
+    lines = tail(f=f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.minute', n=int(21 * n))
+
+    dates = list(set([d.split(b',')[1] for d in lines]))
+    dates.sort()
+
+    trimmedlines = []
+
+    for line in lines:
+        if any(cond in line for cond in [str.encode(metric)]):
+            trimmedlines.append(line)
+    for date in dates:
+        for line in trimmedlines:
+            if date in line:
+                data['dates'].append(date)
+                data['values'].append(float(line.split(b',')[3]))
+
+
 @app.get("/latest/")
 def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
     data = {'data': []}
@@ -35,7 +57,7 @@ def return_metrics(metric: Optional[str] = '', n: Optional[int] = 1):
         for line in trimmedlines:
             if date in line:
                 keeplines.append({"metric": str(line.split(b',')[2], 'utf-8'),
-                                  "value": str(line.split(b',')[3], 'utf-8'),
+                                  "value": float(line.split(b',')[3]),
                                   "unit": line.split(b',')[4],
                                   "date": date})
 
