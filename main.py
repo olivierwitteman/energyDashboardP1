@@ -82,7 +82,8 @@ class energyMGMT:
                                     f'{telegram.ELECTRICITY_USED_TARIFF_1.value},'
                                     f'{telegram.ELECTRICITY_USED_TARIFF_2.value},'
                                     f'{telegram.ELECTRICITY_DELIVERED_TARIFF_1.value},'
-                                    f'{telegram.ELECTRICITY_DELIVERED_TARIFF_2.value}')
+                                    f'{telegram.ELECTRICITY_DELIVERED_TARIFF_2.value},'
+                                    f'{telegram.HOURLY_GAS_METER_READING.value}')
 
                 log_msg = ''
                 for attr, value in telegram:

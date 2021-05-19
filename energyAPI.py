@@ -55,7 +55,8 @@ def return_state():
                 "usedTarrif1": state[4],
                 "usedTarrif2": state[5],
                 "deliveredTarrif1": state[6],
-                "deliveredTarrif2": state[7]}
+                "deliveredTarrif2": state[7],
+                "gasMeter": state[8]}
 
 
 if __name__ == '__main__':
