@@ -42,7 +42,7 @@ def return_deltas(n: int):
 def return_deltas(n: int):
     dict = return_minutes(metric='HOURLY_GAS', n=n)
     dict['values'] = [(float(dict['values'][i+1]) - float(dict['values'][i])) for i in range(len(dict['values'])-1)]
-    dict['dates'] = dict_1['dates'][1:]
+    dict['dates'] = dict['dates'][1:]
     dict['unit'] = 'm3'
 
     return dict
