@@ -20,6 +20,7 @@ def return_deltas(metric: str, n: int, interval='minute'):
     dict['values'] = [60 * (dict['values'][i+1] - dict['values'][i]) for i in range(len(dict['values'])-1)]
     dict['dates'] = dict['dates'][1:]
 
+    return dict
 
 @app.get("/minute/")
 def return_minutes(metric: str, n: int):
