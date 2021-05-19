@@ -14,13 +14,39 @@ def tail(f, n):
     return lines
 
 
-@app.get("/delta/")
-def return_deltas(metric: str, n: int, interval='minute'):
-    dict = return_minutes(metric=metric, n=n)
-    dict['values'] = [60. * (float(dict['values'][i+1]) - float(dict['values'][i])) for i in range(len(dict['values'])-1)]
+@app.get("/usage/power/")
+def return_deltas(n: int):
+    dict = {}
+    dict_1 = return_minutes(metric='USED_TARIFF_1', n=n)
+    dict_2 = return_minutes(metric='USED_TARIFF_1', n=n)
+    dict['values'] = [60. * 1000. * (float(dict_1['values'][i+1]) - float(dict_1['values'][i]) + float(dict_2['values'][i+1]) - float(dict_2['values'][i])) for i in range(len(dict_1['values'])-1)]
     dict['dates'] = dict['dates'][1:]
+    dict['unit'] = 'Watt'
 
     return dict
+
+
+@app.get("/usage/electricity/")
+def return_deltas(n: int):
+    dict = {}
+    dict_1 = return_minutes(metric='USED_TARIFF_1', n=n)
+    dict_2 = return_minutes(metric='USED_TARIFF_1', n=n)
+    dict['values'] = [(float(dict_1['values'][i+1]) - float(dict_1['values'][i]) + float(dict_2['values'][i+1]) - float(dict_2['values'][i])) for i in range(len(dict_1['values'])-1)]
+    dict['dates'] = dict['dates'][1:]
+    dict['unit'] = 'kWh'
+
+    return dict
+
+
+@app.get("/usage/gas/")
+def return_deltas(n: int):
+    dict = return_minutes(metric='HOURLY_GAS', n=n)
+    dict['values'] = [(float(dict['values'][i+1]) - float(dict['values'][i])) for i in range(len(dict['values'])-1)]
+    dict['dates'] = dict['dates'][1:]
+    dict['unit'] = 'm3'
+
+    return dict
+
 
 @app.get("/minute/")
 def return_minutes(metric: str, n: int):
