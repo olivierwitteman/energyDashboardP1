@@ -19,9 +19,9 @@ def return_deltas(n: int):
     dict = {}
     dict_1 = return_minutes(metric='USED_TARIFF_1', n=n)
     dict_2 = return_minutes(metric='USED_TARIFF_2', n=n)
-    dict['values'] = [int(60. * 1000. * (float(dict_1['values'][i+1]) - float(dict_1['values'][i]) + float(dict_2['values'][i+1]) - float(dict_2['values'][i]))) for i in range(len(dict_1['values'])-1)]
+    dict['values'] = [int(60. * (float(dict_1['values'][i+1]) - float(dict_1['values'][i]) + float(dict_2['values'][i+1]) - float(dict_2['values'][i]))) for i in range(len(dict_1['values'])-1)]
     dict['dates'] = dict_1['dates'][1:]
-    dict['unit'] = 'Watt'
+    dict['unit'] = 'kW'
 
     return dict
 
