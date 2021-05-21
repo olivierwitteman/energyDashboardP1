@@ -17,8 +17,8 @@ def tail(f, n):
 @app.get("/usage/power/")
 def return_deltas(n: int, agg: Optional[int] = 1):
     dict = {}
-    dict_1 = return_minutes(metric='USED_TARIFF_1', n=n)
-    dict_2 = return_minutes(metric='USED_TARIFF_2', n=n)
+    dict_1 = return_hist(metric='USED_TARIFF_1', n=n)
+    dict_2 = return_hist(metric='USED_TARIFF_2', n=n)
     dict['values'] = [float(60./agg * (float(dict_1['values'][(i+1)*agg]) - float(dict_1['values'][agg*i]) + float(dict_2['values'][agg*(i+1)]) - float(dict_2['values'][agg*i]))) for i in range(int((len(dict_1['values'])-1)/agg))]
     dict['dates'] = [dict_1['dates'][1+agg*i] for i in range(int((len(dict_1['values'])-1)/agg))]
 
@@ -30,8 +30,8 @@ def return_deltas(n: int, agg: Optional[int] = 1):
 @app.get("/usage/electricity/")
 def return_deltas(n: int):
     dict = {}
-    dict_1 = return_minutes(metric='USED_TARIFF_1', n=n)
-    dict_2 = return_minutes(metric='USED_TARIFF_2', n=n)
+    dict_1 = return_hist(metric='USED_TARIFF_1', n=n)
+    dict_2 = return_hist(metric='USED_TARIFF_2', n=n)
     dict['values'] = [(float(dict_1['values'][i+1]) - float(dict_1['values'][i]) + float(dict_2['values'][i+1]) - float(dict_2['values'][i])) for i in range(len(dict_1['values'])-1)]
     dict['dates'] = dict_1['dates'][1:]
     dict['unit'] = 'kWh'
@@ -41,20 +41,20 @@ def return_deltas(n: int):
 
 @app.get("/usage/gas/")
 def return_deltas(n: int):
-    dict = return_minutes(metric='HOURLY_GAS', n=n)
+    dict = return_hist(metric='HOURLY_GAS', n=n, logfreq='hour')
     dict['values'] = [(float(dict['values'][i+1]) - float(dict['values'][i])) for i in range(len(dict['values'])-1)]
     dict['dates'] = dict['dates'][1:]
-    dict['unit'] = 'm3'
+    dict['unit'] = 'm3/h'
 
     return dict
 
 
-@app.get("/minute/")
-def return_minutes(metric: str, n: int):
+@app.get("/log/")
+def return_hist(metric: str, n: int, logfreq: Optional[str] = 'minute'):
     data = {'dates': [],
             'values': []}
 
-    lines = tail(f=f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.minute', n=int(21 * n))
+    lines = tail(f=f'{os.path.abspath(os.path.dirname(__file__))}/P1_log.{logfreq}', n=int(21 * n))
 
     dates = list(set([d.split(b',')[1] for d in lines]))
     dates.sort()
