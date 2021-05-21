@@ -15,12 +15,13 @@ def tail(f, n):
 
 
 @app.get("/usage/power/")
-def return_deltas(n: int):
+def return_deltas(n: int, agg: Optional[int] = 1):
     dict = {}
     dict_1 = return_minutes(metric='USED_TARIFF_1', n=n)
     dict_2 = return_minutes(metric='USED_TARIFF_2', n=n)
-    dict['values'] = [float(60. * (float(dict_1['values'][i+1]) - float(dict_1['values'][i]) + float(dict_2['values'][i+1]) - float(dict_2['values'][i]))) for i in range(len(dict_1['values'])-1)]
-    dict['dates'] = dict_1['dates'][1:]
+    dict['values'] = [float(60./agg * (float(dict_1['values'][(i+1)*agg]) - float(dict_1['values'][agg*i]) + float(dict_2['values'][agg*(i+1)]) - float(dict_2['values'][agg*i]))) for i in range(int((len(dict_1['values'])-1)/agg))]
+    dict['dates'] = [dict_1['dates'][1+agg*i] for i in range(int((len(dict_1['values'])-1)/agg))]
+
     dict['unit'] = 'kW'
 
     return dict
