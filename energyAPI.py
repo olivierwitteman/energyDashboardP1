@@ -34,7 +34,7 @@ def return_deltas(n: int):
     dict_2 = return_hist(metric='USED_TARIFF_2', n=n, logfreq='hour')
     dict['values'] = [(float(dict_1['values'][i+1]) - float(dict_1['values'][i]) + float(dict_2['values'][i+1]) - float(dict_2['values'][i])) for i in range(len(dict_1['values'])-1)]
     dict['dates'] = dict_1['dates'][1:]
-    dict['unit'] = 'kWh'
+    dict['unit'] = 'kW'
 
     return dict
 
